@@ -5,7 +5,7 @@
  * Description:       Maximize your site's flexibility — swap Template Parts dynamically for each post, saving time and enhancing creativity.
  * Requires at least: 6.6
  * Requires PHP:      7.4
- * Version:           0.0.1
+ * Version:           0.0.3
  * Author:            Matt Watson <support@mattwatson.codes>
  * Author URI:        https://mattwatson.blog
  * License:           GPL-2.0-or-later
@@ -23,7 +23,7 @@ defined( 'ABSPATH' ) || exit;
 /**
  * Define constants.
  */
-const PLUGIN_VERSION      = '0.0.2';
+const PLUGIN_VERSION      = '0.0.3';
 const PLUGIN_PREFIX       = 'dynamic_template_parts_';
 const PLUGIN_SLUG         = 'dynamic-template-parts';
 const PLUGIN_ROOT_DIR     = __DIR__;
