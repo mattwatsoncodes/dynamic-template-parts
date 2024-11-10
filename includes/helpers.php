@@ -70,8 +70,10 @@ function get_template_by_current_type(): ?WP_Block_Template {
 	// Determine the appropriate template type based on post type.
 	if ( get_post_type() === 'page' ) {
 		get_page_template();
-	} else {
+	} elseif ( is_single() ) {
 		get_single_template();
+	} else {
+		return null;
 	}
 
 	// Restore the original query.
@@ -87,10 +89,10 @@ function get_template_by_current_type(): ?WP_Block_Template {
 /**
  * Recursively parses blocks and sub-blocks from the given content.
  *
- * @param array $blocks Array of parsed blocks from parse_blocks.
- * @return array Flattened array of all blocks and sub-blocks.
+ * @param array<int, array<string, mixed>> $blocks Array of parsed blocks from parse_blocks.
+ * @return array<int, array<string, mixed>> Flattened array of all blocks and sub-blocks.
  */
-function parse_all_blocks( $blocks ) {
+function parse_all_blocks( array $blocks ): array {
     $all_blocks = [];
 
     foreach ( $blocks as $block ) {
@@ -100,7 +102,7 @@ function parse_all_blocks( $blocks ) {
         // Check if the block has inner blocks and recursively parse them
         if ( ! empty( $block['innerBlocks'] ) ) {
             $inner_blocks = parse_all_blocks( $block['innerBlocks'] );
-            $all_blocks = array_merge( $all_blocks, $inner_blocks );
+            $all_blocks   = array_merge( $all_blocks, $inner_blocks );
         }
     }
 

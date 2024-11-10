@@ -3,7 +3,7 @@ Contributors:      mattwatsoncodes
 Tags:              template, block, editor, switcher, custom-templates
 Requires at least: 5.8
 Tested up to:      6.6
-Stable tag:        0.0.1
+Stable tag:        0.0.2
 Requires PHP:      7.4
 License:           GPL-2.0-or-later
 License URI:       https://www.gnu.org/licenses/gpl-2.0.html
@@ -96,6 +96,9 @@ Dynamic Template Parts is designed to work with any Full Site Editing (FSE) them
 6.	**Save and View the Post with Swapped Template Parts:** Save your changes and preview the post to see your customised Template Parts in action.
 
 == Changelog ==
+
+= 0.0.2 =
+* Fixes missing singular check when checking for the template
 
 = 0.0.1 =
 * Initial Preview Release
