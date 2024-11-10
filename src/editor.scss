@@ -1,0 +1,54 @@
+/**
+ * Editor SCSS.
+ *
+ * Styles that are applied in the WordPress Editor.
+ */
+
+.dynamic-template-parts-preview {
+	display: grid;
+	gap: 0.5rem;
+	grid-template-columns: auto 1fr;
+
+	// Disabled state for preview
+	&--disabled {
+		opacity: 0.5;
+	}
+
+	// Title styling
+	&__title {
+		display: block;
+		margin-top: -0.125rem;
+		margin-bottom: 0.5rem;
+	}
+
+	// Styling for the input and checkbox
+	input[type="checkbox"].dynamic-template-parts-preview__input {
+		margin-top: 0;
+
+		// Thinner selected border for checkbox
+		&:checked + .dynamic-template-parts-preview__preview .block-editor-block-preview__container {
+			outline: 1px solid var(--wp-admin-theme-color);
+		}
+	}
+
+	// Styling for the non-checkbox input
+	&__input {
+		margin-top: 0;
+
+		// Thicker selected border for non-checkbox input
+		&:checked + .dynamic-template-parts-preview__preview .block-editor-block-preview__container {
+			outline: 2px solid var(--wp-admin-theme-color);
+		}
+	}
+
+	// Pointer styling and margin for preview
+	&__input + &__preview {
+		cursor: pointer;
+		margin-bottom: 1rem;
+
+		// Hover styling for preview container
+		.block-editor-block-preview__container:hover {
+			outline: 1px solid #ccc;
+		}
+	}
+}

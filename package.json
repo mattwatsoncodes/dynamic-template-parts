@@ -1,0 +1,48 @@
+{
+	"name": "dynamic-template-parts",
+	"version": "0.0.1",
+	"description": "Dynamic Template Parts",
+	"author": "Matt Watson",
+	"license": "GPL-2.0-or-later",
+	"main": "build/index.js",
+	"husky": {
+		"hooks": {}
+	},
+	"scripts": {
+		"prepare": "husky install",
+		"build": "wp-scripts build --webpack-copy-php",
+		"format": "wp-scripts format",
+		"lint:css": "stylelint \"./**/*.{css,scss}\" --config .stylelintrc.json --allow-empty-input",
+		"lint:js": "eslint --ext .js,.jsx .",
+		"lint:php": "composer phpcs . && composer phpstan",
+		"lint": "npm run lint:php && npm run lint:js && npm run lint:css",
+		"packages-update": "wp-scripts packages-update",
+		"plugin-zip": "wp-scripts plugin-zip",
+		"start": "wp-scripts start --webpack-copy-php"
+	},
+	"devDependencies": {
+		"@wordpress/eslint-plugin": "^13.4.0",
+		"@wordpress/scripts": "^25.5.0",
+		"@wordpress/stylelint-config": "^21.3.0",
+		"eslint": "^8.26.0",
+		"eslint-config-react-app": "^7.0.1",
+		"eslint-plugin-flowtype": "^8.0.3",
+		"eslint-plugin-import": "^2.26.0",
+		"eslint-plugin-jsdoc": "^39.3.24",
+		"eslint-plugin-jsx-a11y": "^6.6.1",
+		"eslint-plugin-react": "^7.31.10",
+		"eslint-plugin-react-hooks": "^4.6.0",
+		"eslint-plugin-sort-destructure-keys": "^1.4.0",
+		"glob": "^10.2.6",
+		"husky": "^8.0.0",
+		"lodash": "^4.17.21",
+		"react-tooltip": "^5.21.4",
+		"stylelint": "^14.14.0",
+		"stylelint-formatter-github-annotate": "^0.0.3"
+	},
+	"dependencies": {
+		"@wordpress/icons": "^10.11.0",
+		"classnames": "^2.5.1",
+		"react-dom": "^18.2.0"
+	}
+}
