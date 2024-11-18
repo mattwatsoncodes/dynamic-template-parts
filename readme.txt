@@ -141,6 +141,12 @@ add_filter( 'dynamic_template_parts_user_can_switch', function( $can_switch ) {
 = 1.0.0 =
 * Initial Release
 
+= 1.0.0 =
+* Initial Release
+
+= 1.0.0 =
+* Initial Release
+
 == Upgrade Notice ==
 
 = 1.0.0 =
