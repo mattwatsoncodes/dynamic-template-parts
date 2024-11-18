@@ -11,7 +11,6 @@
  * License:           GPLv2 or later
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain:       dynamic-template-parts
- * Domain Path:       /languages
  *
  * @package           dynamic-template-parts
  */
