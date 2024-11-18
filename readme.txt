@@ -1,30 +1,30 @@
 === Dynamic Template Parts ===
 Contributors:      mattwatsoncodes
+Donate link:       https://buymeacoffee.com/mattwatsoncodes
 Tags:              template, block, editor, switcher, custom-templates
 Requires at least: 5.8
 Tested up to:      6.6
-Stable tag:        0.0.3
+Stable tag:        1.0.0
 Requires PHP:      7.4
-License:           GPL-2.0-or-later
+License:           GPLv2 or later
 License URI:       https://www.gnu.org/licenses/gpl-2.0.html
 
-**Maximise your site's flexibility** — swap Template Parts dynamically for each post, saving time and enhancing creativity.
-
+Enhance your site’s flexibility with Dynamic Template Parts, allowing you to swap headers, footers, and more on a post-by-post basis.
 == Description ==
 
-**Are you tired of juggling multiple templates for every variation of your site? Dynamic Template Parts is here to revolutionize your workflow.**
+**Transform the way you manage templates on your WordPress site with Dynamic Template Parts.** This powerful plugin extends the Full Site Editor, letting you swap headers, footers, and other Template Parts dynamically based on the content you’re editing — say goodbye to managing multiple templates for every layout variation.
 
-Dynamic Template Parts extends the WordPress block editor, allowing you to dynamically switch and customise Template Parts based on your content. No more creating endless templates for every possible combination of headers, footers, and sidebars. With this plugin, you can effortlessly swap out individual Template Parts on a post-by-post basis, building your templates on the fly.
+With Dynamic Template Parts, you gain the freedom to swap Template Parts directly within the block editor, whether it’s for posts, pages, or custom post types. The user-friendly interface allows you to preview changes in real-time, giving you complete control over the look and feel of each piece of content without needing custom code.
 
-Experience a new level of flexibility in designing your site layouts. The intuitive UI comes with previews, so you can see exactly what you're swapping before you make the change. Whether you're working with posts, pages, or custom post types, Dynamic Template Parts streamlines your editing process, saving you time and hassle.
+https://www.youtube.com/watch?v=elRBOak3vek
 
 **Key Features:**
 
-- **Dynamic Template Part Swapping:** Swap Template Parts like headers, footers, and sidebars directly within the block editor.
-- **Flexible Swapping Options:** Choose to swap Template Parts of the same type, any type, or curate specific parts for swapping.
-- **Template Part Previews:** See what each Template Part looks like before you apply it.
-- **Supports All Content Types:** Works seamlessly with posts, pages, and custom post types.
-- **User-Friendly Interface:** Easy to use, no coding required.
+* **Dynamic Template Part Swapping:** Replace headers, footers, sidebars, or any template part within the block editor.
+* **Flexible Swapping Options:** Define whether to swap within the same type, any type, or curated parts.
+* **Template Part Previews:** Preview Template Parts before selecting, ensuring your content looks perfect.
+* **Supports All Content Types:** Works with posts, pages, and custom post types.
+* **User-Friendly Interface:** Simple setup—no coding required.”
 
 **Get Started:**
 
@@ -33,7 +33,7 @@ To implement an alternative Header Template Part using the Full Site Editor, ple
 1.	**Create an Alternative Header Template Part:** Design and save a new Header Template Part within the Full Site Editor to serve as an alternative to your default header.
 2.	**Edit the Single Posts Template:** Navigate to the Single Posts template and select the Header Template Part, and view the block sidebar.
 3.	**Enable the Dynamic Template Part Option:** In the Template Part attributes panel, enable the Dynamic Template Part setting.
-4.	**Configure Swapping Preferences (Optional):** Adjust your swapping preferences according to your requirements.
+4.	**Configure Swapping Preferences (Optional):** Adjust your swapping preferences according to your requirements (choose to swap your Template Part with differnt Template Part types, or use a curated list of Template Parts).
 5.	**Edit a Post and Access the Dynamic Template Part Sidebar:** Open a post for editing and select the Dynamic Template Part sidebar from the editor interface.
 6.	**Select the Alternative Header Template Part:** Choose the alternative Header Template Part you created to replace the default header in this specific post.
 7.	**Save and Preview the Post:** Save your changes and preview the post to verify that the alternative header is displayed correctly.
@@ -64,19 +64,11 @@ Absolutely. Dynamic Template Parts works with posts, pages, and any custom post 
 
 = Can I swap Template Parts of different types? =
 
-Yes, you have the option to allow swapping with Template Parts of the same type (Header, Footer, Generic), any type, or a curated list of types.
+Yes, you have the option to allow swapping with Template Parts of the same type (Header, Footer, Generic), any type, or a curated list of parts from different types.
 
 = How are user permissions managed? =
 
-By default, any user with the `edit_posts` capability can switch template parts, which typically includes Authors and above. If you wish to restrict this ability to certain user roles, you can use the `dynamic_template_parts_user_can_switch` filter.
-
-**Example:**
-
-```
-add_filter( 'dynamic_template_parts_user_can_switch', function( $permission ) {
-    return current_user_can( 'manage_options' );
-} );
-````
+See the User Permissions section for information on how you can alter the template swapping permissions.
 
 = What happens if I deactivate the plugin? =
 
@@ -86,25 +78,68 @@ If you deactivate the plugin, your content will revert to using the default temp
 
 Dynamic Template Parts is designed to work with any Full Site Editing (FSE) theme that utilizes block templates and template parts. It enhances the existing functionality of FSE themes without requiring theme modifications.
 
+== Hooks and Filters ==
+
+Dynamic Template Parts provides filters to allow developers to customise its behaviour. Below are the available filters and how to use them.
+
+#### Show Deselected Template Part
+
+The `dynamic_template_parts_show_deselected_template_part` filter lets you control whether a previously selected template part that is no longer available for selection should still be displayed. By default, the plugin keeps the part visible to avoid unintended changes, but you can override this to automatically remove unavailable template parts.
+
+**Example:**
+
+If you want to ensure that unavailable template parts are removed and replaced with the default template part, you can use the following code:
+
+`
+add_filter( 'dynamic_template_parts_show_deselected_template_part', function( $show_deselected, $template_parts, $selected_part ) {
+    // Always hide deselected template parts and fall back to the default.
+    return false;
+}, 10, 3 );
+`
+
+**Parameters:**
+
+- `$show_deselected` (bool): Whether to show the deselected template part. Defaults to `true`.
+- `$template_parts` (array): The list of available template parts.
+- `$selected_part` (string): The currently selected template part.
+
+#### User Permissions
+
+The `dynamic_template_parts_user_can_switch` filter lets you customise which users are allowed to switch template parts. By default, any user with the `edit_posts` capability can access this functionality, but you can restrict it to specific roles or capabilities.
+
+**Example:**
+
+If you want to restrict template part switching to administrators only, you can use the following code:
+
+`
+add_filter( 'dynamic_template_parts_user_can_switch', function( $can_switch ) {
+    // Allow only administrators to switch template parts.
+    return current_user_can( 'manage_options' );
+} );
+`
+
+**Parameters:**
+
+- `$can_switch` (bool): Whether the current user has permission to switch template parts. Defaults to checking the `edit_posts` capability.
+
 == Screenshots ==
 
-1.	**Select a Template Part in the Template Editor:** Navigate to the Template Editor and select a Template Part you wish to edit.
-2.	**Enable the Dynamic Template Part Option:** In the Template Part attributes panel, enable the Dynamic Template Part setting.
-3.	**Choose Swapping Preferences:** Configure your swapping preferences by selecting whether to swap with the same type, any type, or curated Template Parts.
-4.	**Edit a Post and Access the Dynamic Template Part Sidebar:** While editing a post, open the Dynamic Template Part sidebar from the editor interface.
-5.	**View Available Template Parts with Previews, and Select an Alternative Template Part:** Browse through the available Template Parts, complete with live previews to assist in your selection. Choose the alternative Template Part you wish to substitute in place of the default.
-6.	**Save and View the Post with Swapped Template Parts:** Save your changes and preview the post to see your customised Template Parts in action.
+1.	**Use alternative Template Parts:** Use the Full Site Editor to define your alternative template parts.
+2.	**Select a Template Part in the Template Editor:** Navigate to the Template Editor and select a Template Part you wish to edit.
+3.	**Enable the Dynamic Template Part Option:** In the Template Part attributes panel, enable the Dynamic Template Part setting.
+4.	**Choose Swapping Preferences:** Configure your swapping preferences by selecting whether to swap with the same type, any type, or curated Template Parts.
+5.	**Edit a Post and Access the Dynamic Template Part Sidebar:** While editing a post, open the Dynamic Template Part sidebar from the editor interface.
+6.	**View Available Template Parts with Previews, and Select an Alternative Template Part:** Browse through the available Template Parts, complete with live previews to assist in your selection. Choose the alternative Template Part you wish to substitute in place of the default.
+7.	**Save and View the Post with Swapped Template Parts:** Save your changes and preview the post to see your customised Template Parts in action.
+
+== Roadmap ==
+
+1. **Support for additional content types:** Support additional content types such as authors, terms and archive pages.
 
 == Changelog ==
 
-= 0.0.3 =
-- Ensure plugin is updated with correct version number
-
-= 0.0.2 =
-* Fixes missing singular check when checking for the template
-
-= 0.0.1 =
-* Initial Preview Release
+= 1.0.0 =
+* Initial Release
 
 == Upgrade Notice ==
 
@@ -118,4 +153,4 @@ Welcome to the first release of Dynamic Template Parts! Enjoy dynamic control ov
 
 == Known Issues ==
 
-There are no known issues at this time.
+See the Roadmap section for known issues.

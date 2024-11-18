@@ -138,7 +138,7 @@ function get_switchable_template_part_options(): array {
 	// Sort template parts by title before entering the loop.
 	usort( $template_parts, function ( $a, $b ) {
 		return strcmp( $a->title, $b->title );
-	});
+	} );
 
 	// Populate options for each switchable template part.
 	foreach ( $all_blocks as $block ) {

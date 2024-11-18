@@ -13,12 +13,26 @@ const title = __( 'Dynamic Template Parts', 'dynamic-template-parts' );
 
 /**
  * Helper function to determine if an option is selected.
+ *
+ * @param {string} key                   The key of the template part.
+ * @param {string} optionId              The ID of the current option.
+ * @param {Object} switchedTemplateParts The switched template parts data.
+ * @param {string} defaultOptionId       The ID of the default option.
+ * @param {Object} templateParts         The template parts data.
+ * @return {boolean} Whether the option is selected.
  */
-const isOptionSelected = ( key, optionId, switchedTemplateParts, defaultOptionId ) => {
-	return (
-		switchedTemplateParts?.[ key ]?.id === optionId ||
-		( ! switchedTemplateParts[ key ] && optionId === defaultOptionId )
-	);
+const isOptionSelected = ( key, optionId, switchedTemplateParts, defaultOptionId, templateParts ) => {
+	const isSwitchedSelected = switchedTemplateParts?.[ key ]?.id === optionId;
+
+	// If the key does not exist in templateParts and it's the default option, select it.
+	const isDefaultWhenKeyMissing =
+		! templateParts?.[ key ] && optionId === defaultOptionId;
+
+	// Default selection when no switched parts for the key.
+	const isDefaultSelected =
+		! switchedTemplateParts?.[ key ] && optionId === defaultOptionId;
+
+	return isSwitchedSelected || isDefaultWhenKeyMissing || isDefaultSelected;
 };
 
 /**
@@ -76,6 +90,15 @@ export const RenderDynamicTemplateParts = () => {
 		return null;
 	}
 
+	// Exit early if there are no valid template parts.
+	const hasValidTemplateParts = Object.values( templateParts ).some(
+		( part ) => part.options.length > 1
+	);
+
+	if ( ! hasValidTemplateParts ) {
+		return null;
+	}
+
 	return (
 		<>
 			{ /* Sidebar Menu Item */ }
@@ -85,58 +108,65 @@ export const RenderDynamicTemplateParts = () => {
 
 			{ /* Main Plugin Sidebar */ }
 			<PluginSidebar name="dynamic-template-parts" title={ title }>
-				{ Object.entries( templateParts ).map( ( [ key, part ] ) => (
-					<Panel key={ key }>
-						<PanelBody title={ part.title }>
-							<BaseControl
-								// translators: %s: Template Part Title.
-								help={ __( "Select a template part to display instead of '%s'.", 'dynamic-template-parts' ).replace( '%s', part.title ) }
-							/>
-							{ part.options.map( ( option ) => {
-								const isSelected = isOptionSelected(
-									key,
-									option.id,
-									switchedTemplateParts,
-									part.options.find( ( opt ) => opt.default )?.id
-								);
+				{ Object.entries( templateParts ).map( ( [ key, part ] ) => {
+					// Only render if we can select more than one part.
+					if ( part.options.length < 2 ) {
+						return null;
+					}
 
-								const classes = classNames( 'dynamic-template-parts-preview', {
-									'dynamic-template-parts-preview--selected': isSelected,
-								} );
+					return (
+						<Panel key={ key }>
+							<PanelBody title={ part.title }>
+								<BaseControl
+									// translators: %s: Template Part Title.
+									help={ __( "Select a template part to display instead of '%s'.", 'dynamic-template-parts' ).replace( '%s', part.title ) }
+								/>
+								{ part.options.map( ( option ) => {
+									const isSelected = isOptionSelected(
+										key,
+										option.id,
+										switchedTemplateParts,
+										part.options.find( ( opt ) => opt.default )?.id
+									);
 
-								return (
-									<label className={ classes } htmlFor={ `${key}//${option.id}` } key={ `${key}//${option.id}` }>
-										<input
-											checked={ isSelected }
-											className="dynamic-template-parts-preview__input"
-											id={ `${key}//${option.id}` }
-											name={ key }
-											type="radio"
-											value={ option.id }
-											onChange={ ( event ) => {
-												const updatedParts = getUpdatedSwitchedParts(
-													event.target.value,
-													key,
-													part.options,
-													switchedTemplateParts
-												);
-												editPost( {
-													meta: {
-														[ DynamicTemplatePartsKey ]: updatedParts,
-													},
-												} );
-											} }
-										/>
-										<div className="dynamic-template-parts-preview__preview">
-											<span className="dynamic-template-parts-preview__title">{ option.title }</span>
-											{ blockPreviews[ option.id ] }
-										</div>
-									</label>
-								);
-							} ) }
-						</PanelBody>
-					</Panel>
-				) ) }
+									const classes = classNames( 'dynamic-template-parts-preview', {
+										'dynamic-template-parts-preview--selected': isSelected,
+									} );
+
+									return (
+										<label className={ classes } htmlFor={ `${key}//${option.id}` } key={ `${key}//${option.id}` }>
+											<input
+												checked={ isSelected }
+												className="dynamic-template-parts-preview__input"
+												id={ `${key}//${option.id}` }
+												name={ key }
+												type="radio"
+												value={ option.id }
+												onChange={ ( event ) => {
+													const updatedParts = getUpdatedSwitchedParts(
+														event.target.value,
+														key,
+														part.options,
+														switchedTemplateParts
+													);
+													editPost( {
+														meta: {
+															[ DynamicTemplatePartsKey ]: updatedParts,
+														},
+													} );
+												} }
+											/>
+											<div className="dynamic-template-parts-preview__preview">
+												<span className="dynamic-template-parts-preview__title">{ option.title }</span>
+												{ blockPreviews[ option.id ] }
+											</div>
+										</label>
+									);
+								} ) }
+							</PanelBody>
+						</Panel>
+					);
+				} ) }
 			</PluginSidebar>
 		</>
 	);

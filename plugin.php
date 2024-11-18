@@ -2,13 +2,13 @@
 /**
  * Plugin Name:       Dynamic Template Parts
  * Plugin URI:        https://mattwatson.blog/dynamic-template-parts
- * Description:       Maximize your site's flexibility — swap Template Parts dynamically for each post, saving time and enhancing creativity.
+ * Description:       Enhance your site’s flexibility with Dynamic Template Parts, allowing you to swap headers, footers, and more on a post-by-post basis.
  * Requires at least: 6.6
  * Requires PHP:      7.4
- * Version:           0.0.3
+ * Version:           1.0.0
  * Author:            Matt Watson <support@mattwatson.codes>
  * Author URI:        https://mattwatson.blog
- * License:           GPL-2.0-or-later
+ * License:           GPLv2 or later
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain:       dynamic-template-parts
  * Domain Path:       /languages
@@ -23,7 +23,7 @@ defined( 'ABSPATH' ) || exit;
 /**
  * Define constants.
  */
-const PLUGIN_VERSION      = '0.0.3';
+const PLUGIN_VERSION      = '1.0.0';
 const PLUGIN_PREFIX       = 'dynamic_template_parts_';
 const PLUGIN_SLUG         = 'dynamic-template-parts';
 const PLUGIN_ROOT_DIR     = __DIR__;

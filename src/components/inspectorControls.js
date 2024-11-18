@@ -38,7 +38,7 @@ const getCheckboxControlLabel = ( part, currentId ) => {
 const handleCheckboxChange = ( checked, partId, limitedSwitchableParts, setAttributes ) => {
 	const updatedParts = checked
 		? [ ...limitedSwitchableParts, partId ]
-		: limitedSwitchableParts.filter( ( id ) => id !== partId );
+		: limitedSwitchableParts?.filter( ( id ) => id !== partId );
 
 	setAttributes( { limitedSwitchableParts: updatedParts } );
 };
@@ -62,14 +62,14 @@ export default function inspectorControls( BlockEdit ) {
 		// Fetch template parts using useEntityRecords and filter by area if needed.
 		const { records: templateParts = [], hasResolved } = useEntityRecords( 'postType', 'wp_template_part' );
 		const filteredTemplateParts = useMemo( () => {
-			const parts = useArea ? templateParts : templateParts.filter( ( record ) => record.area === area );
-			return parts.sort( ( a, b ) => a.title.raw.localeCompare( b.title.raw ) );
+			const parts = useArea ? templateParts : templateParts?.filter( ( record ) => record.area === area );
+			return parts?.sort( ( a, b ) => a.title.raw.localeCompare( b.title.raw ) );
 		}, [ templateParts, area, useArea ] );
 
 		// Memoize BlockPreview components for each template part.
 		const memoizedBlockPreviews = useMemo( () => {
 			const previews = {};
-			filteredTemplateParts.forEach( ( part ) => {
+			filteredTemplateParts?.forEach( ( part ) => {
 				const { theme: partTheme, slug: partSlug } = part;
 				const templatePartBlock = createBlock( 'core/template-part', { slug: partSlug, theme: partTheme } );
 				previews[ part.id ] = (
