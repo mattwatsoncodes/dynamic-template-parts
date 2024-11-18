@@ -12,7 +12,6 @@ namespace Dynamic_Template_Parts;
  */
 function bootstrap(): void {
 	add_filter( 'plugin_action_links', __NAMESPACE__ . '\\add_plugin_list_table_links', 10, 2 );
-	add_action( 'init', __NAMESPACE__ . '\\init' );
 
 	Assets\bootstrap();
 	Meta\bootstrap();
@@ -42,15 +41,4 @@ function add_plugin_list_table_links( array $links, string $file ): array {
 	array_unshift( $links, $support_link );
 
     return $links;
-}
-
-/**
- * Initialize the plugin's text domain for localization.
- */
-function init(): void {
-	load_plugin_textdomain(
-		PLUGIN_SLUG,
-		false,
-		dirname( plugin_basename( PLUGIN_ROOT_FILE ) ) . '/languages/'
-	);
 }
